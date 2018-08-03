@@ -17,14 +17,17 @@ RUN apt-get -y update \
 ADD ./csgo_ds.txt $SERVER/csgo_ds.txt
 ADD ./update.sh $SERVER/update.sh
 ADD ./csgo.sh $SERVER/csgo.sh
-RUN mkdir /$HOME/.steam/sdk32
-RUN ln -s /$SERVER/steamcmd/linux32/steamclient.so /$HOME/.steam/sdk32/steamclient.so
+
 
 RUN chown -R $USER:$USER $SERVER
 
 USER $USER
 RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
- && $SERVER/update.sh
+ && $SERVER/update.sh \
+ && cp $SERVER/steamcmd.sh $SERVER/steam.sh \
+ && chmod +x $SERVER/steam.sh
+ RUN mkdir /$HOME/.steam/sdk32
+RUN ln -s /$SERVER/steamcmd/linux32/steamclient.so /$HOME/.steam/sdk32/steamclient.so
 
 WORKDIR /home/$USER/hlserver
 CMD ["./csgo.sh"]
