@@ -25,8 +25,6 @@ RUN chown -R $USER:$USER $SERVER
 USER $USER
 RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
  && $SERVER/update.sh
-RUN cp $SERVER/steamcmd.sh $SERVER/steam.sh
-RUN chmod +x $SERVER/steam.sh
 
 WORKDIR /home/$USER/hlserver
 CMD ["./csgo.sh"]
