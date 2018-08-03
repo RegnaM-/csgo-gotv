@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
     export SERVER_HOSTNAME="${SERVER_HOSTNAME:-GOTV}"
     export SERVER_PASSWORD="${SERVER_PASSWORD:-changeme}"
     export RCON_PASSWORD="${RCON_PASSWORD:-changeme}"
