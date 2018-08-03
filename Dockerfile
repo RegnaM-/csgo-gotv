@@ -17,6 +17,8 @@ RUN apt-get -y update \
 ADD ./csgo_ds.txt $SERVER/csgo_ds.txt
 ADD ./update.sh $SERVER/update.sh
 ADD ./csgo.sh $SERVER/csgo.sh
+RUN mkdir /$HOME/.steam/sdk32
+RUN ln -s /$SERVER/steamcmd/linux32/steamclient.so /$HOME/.steam/sdk32/steamclient.so
 
 RUN chown -R $USER:$USER $SERVER
 
