@@ -20,7 +20,7 @@
 cd $CSGO_DIR
 
 ### Create dynamic server config
-cat << SERVERCFG > $CSGO_DIR/csgo/cfg/server.cfg
+cat << SERVERCFG > $CSGO_DIR/csgo/csgo/cfg/server.cfg
 hostname "$SERVER_HOSTNAME"
 rcon_password "$RCON_PASSWORD"
 sv_password "$SERVER_PASSWORD"
@@ -44,7 +44,7 @@ writeip
 tv_enable "1"
 SERVERCFG
 
-./srcds_run \
+./csgo/srcds_run \
     -console \
     -usercon \
     -game csgo \
