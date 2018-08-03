@@ -4,7 +4,7 @@
     export RCON_PASSWORD="${RCON_PASSWORD:-changeme}"
     export GOTV_HOSTNAME="${GOTV_HOSTNAME:-GOTV}"
     export STEAM_ACCOUNT="${STEAM_ACCOUNT:-changeme}"
-    export CSGO_DIR="${CSGO_DIR:-/$HOME/hlserver}"
+    export CSGO_DIR="${CSGO_DIR:-$HOME/hlserver}"
     export IP="${IP:-0.0.0.0}"
     export PORT="${PORT:-27015}"
     export GOTV_PORT="${GOTV_PORT:-27020}"
