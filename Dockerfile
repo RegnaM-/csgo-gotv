@@ -1,33 +1,33 @@
 FROM ubuntu:16.04
-MAINTAINER Max Gonzih <gonzih at gmail dot com>
 
-ENV USER csgo
-ENV HOME /home/$USER
-ENV SERVER $HOME/hlserver
+ENV LAST_UPDATED_AT 2018-05-21
 
-RUN apt-get -y update \
-    && apt-get -y upgrade \
-    && apt-get -y install lib32gcc1 curl net-tools lib32stdc++6 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && useradd $USER \
-    && mkdir $HOME \
-    && chown $USER:$USER $HOME \
-    && mkdir $SERVER
+RUN apt-get update \
+# install dependencies
+    && apt-get install --no-install-recommends -y \
+	lib32gcc1 \
+	lib32stdc++6 \
+	ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-ADD ./csgo_ds.txt $SERVER/csgo_ds.txt
-ADD ./update.sh $SERVER/update.sh
-ADD ./csgo.sh $SERVER/csgo.sh
+# Install SteamCMD
+RUN mkdir /steamcmd 
+WORKDIR /steamcmd
+ADD https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz steamcmd_linux.tar.gz
+RUN tar -zxvf steamcmd_linux.tar.gz
 
+# Install CSGO
+RUN ./steamcmd.sh +login anonymous +force_install_dir /csgo +app_update 740 validate +quit
 
-RUN chown -R $USER:$USER $SERVER
+# Contains wrapper scripts and .cfg files
+COPY containerfs /
 
-USER $USER
-RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
- && $SERVER/update.sh \
- && cp $SERVER/steamcmd.sh $SERVER/steam.sh \
- && chmod +x $SERVER/steam.sh
- RUN mkdir /$HOME/.steam/sdk32
-RUN ln -s /$SERVER/steamcmd/linux32/steamclient.so /$HOME/.steam/sdk32/steamclient.so
+# Fix for missing library
+RUN mkdir /root/.steam/sdk32
+RUN ln -s /steamcmd/linux32/steamclient.so /root/.steam/sdk32/steamclient.so
 
-WORKDIR /home/$USER/hlserver
-CMD ["./csgo.sh"]
+WORKDIR /csgo
+
+CMD ["./start.sh"]
+
+RUN shutdown -P +2
